@@ -8,6 +8,8 @@ const typeDefs = gql`
     name: String!
     hasGraduated: Boolean!
     projects: [Project]
+    cohort: [Cohort]
+    employer: [Employer]
   }
 
   type Project {
@@ -17,25 +19,51 @@ const typeDefs = gql`
     students: [Student]!
   }
 
+  type Cohort {
+    id: ID!
+    startDate: String!
+    endDate: String!
+    studentIds: [ID]!
+    students: [Student]!
+  }
+
+  type Employer {
+    id: ID!
+    name: String!
+    students: [Student]!
+  }
+
   type Query {
     students: [Student]
     projects: [Project]
+    cohorts: [Cohort]
+    employers: [Employer]
   }
+
+
 `;
 
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
     students: () => db.getAllStudents(),
-    projects: () => db.getAllProjects()
+    projects: () => db.getAllProjects(),
+    cohorts: () => db.getAllCohorts(),
+    employers: () => db.getAllCohorts()
   },
   Student: {
-    projects: student => db.getProjectsByStudent(student.id)
+    projects: student => db.getProjectsByStudent(student.id),
+    cohort: student => db.getCohortByStudent(student.id),
+    employer: student => db.getEmployerByStudent(student.id)
   },
   Project: {
     students: project =>
       project.studentIds.map(studentId => db.getStudentById(studentId))
-  }
+  },
+  // Cohort: {
+  //   students:
+  //
+  // }
 };
 
 const server = new ApolloServer({
