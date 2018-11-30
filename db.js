@@ -86,6 +86,8 @@ module.exports = {
   getAllStudents,
   getStudentById,
   getAllProjects,
+  getAllCohorts,
+  getAllEmployers,
   getProjectsByStudent,
   getCohortByStudent,
   getEmployerByStudent

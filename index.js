@@ -49,7 +49,7 @@ const resolvers = {
     students: () => db.getAllStudents(),
     projects: () => db.getAllProjects(),
     cohorts: () => db.getAllCohorts(),
-    employers: () => db.getAllCohorts()
+    employers: () => db.getAllEmployers()
   },
   Student: {
     projects: student => db.getProjectsByStudent(student.id),
@@ -60,10 +60,13 @@ const resolvers = {
     students: project =>
       project.studentIds.map(studentId => db.getStudentById(studentId))
   },
-  // Cohort: {
-  //   students:
-  //
-  // }
+  Cohort: {
+    students: cohort => cohort.studentIds.map(studentId =>  db.getStudentById(studentId))
+
+  },
+  Employer: {
+    students: employer => employer.studentIds.map(studentId => db.getStudentById(studentId))
+  }
 };
 
 const server = new ApolloServer({
